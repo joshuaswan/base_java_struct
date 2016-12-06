@@ -2,6 +2,8 @@ package com.joshua.struct.applications;
 
 import org.junit.Test;
 
+import java.util.Scanner;
+
 /**
  * Created by joshua on 2016/12/5.
  */
@@ -42,5 +44,17 @@ public class CurrencyTest {
         j = i.increment(g).add(h);
         System.out.println(j);
         System.out.println(i);
+        System.out.println( "i-j" + i.subtract(j).toString());
+
+        System.out.println(i.percent(10));
+        System.out.println(i.multiply(10));
+        System.out.println(i.divide(10));
     }
+
+//    public static void main(String... args){
+//        Currency currency = new Currency();
+//        currency.input();
+//        System.out.println(currency.toString());
+//    }
+
 }

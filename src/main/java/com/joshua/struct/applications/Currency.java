@@ -2,6 +2,7 @@ package com.joshua.struct.applications;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Scanner;
 
 /**
  * Created by joshua on 2016/12/5.
@@ -189,5 +190,97 @@ public class Currency {
     public Currency increment(Currency x){
         setValue(add(x));
         return this;
+    }
+
+    public void input(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("input a value of $");
+        double value = input.nextDouble();
+        setValue(value);
+    }
+
+    public Currency subtract(Currency x){
+        long a1 = dollars * 100 + cents;
+        if (sign == MINUS){
+            a1 = -a1;
+        }
+
+        long a2 = x.dollars * 100 + x.cents;
+        if (x.sign == MINUS){
+            a2 = -a2;
+        }
+
+        long a3 = a1 - a2;
+
+        //convert result to Currency object
+        Currency answer = new Currency();
+        if (a3<0){
+            answer.sign = MINUS;
+            a3 = -a3;
+        }else {
+            answer.sign = PLUS;
+        }
+        answer.dollars = a3 /100;
+        answer.cents = (byte) (a3 - answer.dollars * 100);
+
+        return answer;
+    }
+
+    public Currency percent(float x){
+        if (x<0 || x>100){
+            throw new IllegalArgumentException("x value must be between 1 and 0");
+        }else {
+            long a1 = dollars * 100 + cents;
+            if (sign == MINUS){
+                a1 = -a1;
+            }
+            long a2 = (long) (a1 * x * 0.01);
+            Currency answer = new Currency();
+            if (a2 <0){
+                answer.sign = MINUS;
+                a2 = -a2;
+            }else {
+                answer.sign = PLUS;
+            }
+            answer.dollars = a2 / 100;
+            answer.cents = (byte) (a2 - answer.dollars * 100);
+            return answer;
+        }
+    }
+
+    public Currency multiply(float x){
+        long a1 = dollars * 100 + cents;
+        if (sign == MINUS){
+            a1 = -a1;
+        }
+        long a2 = (long) (a1 * x);
+        Currency answer = new Currency();
+        if (a2 <0){
+            answer.sign = MINUS;
+            a2 = -a2;
+        }else {
+            answer.sign = PLUS;
+        }
+        answer.dollars = a2 / 100;
+        answer.cents = (byte) (a2 - answer.dollars * 100);
+        return answer;
+    }
+
+    public Currency divide(float x) {
+        long a1 = dollars * 100 + cents;
+        if (sign == MINUS){
+            a1 = -a1;
+        }
+        long a2 = (long) (a1 / x);
+        Currency answer = new Currency();
+        if (a2 <0){
+            answer.sign = MINUS;
+            a2 = -a2;
+        }else {
+            answer.sign = PLUS;
+        }
+        answer.dollars = a2 / 100;
+        answer.cents = (byte) (a2 - answer.dollars * 100);
+        return answer;
     }
 }
