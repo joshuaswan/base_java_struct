@@ -12,7 +12,7 @@ public class Currency {
     //data and method members of Currency come here
 
     //class constants
-    public static final boolean PLUS=true;
+    public static final boolean PLUS = true;
     public static final boolean MINUS = false;
     public static final NumberFormat TWODIGIT = new DecimalFormat("00");
 
@@ -25,22 +25,23 @@ public class Currency {
 
     /**
      * initialize instance to sign $ dollars cents
-     * @throws IllegalArgumentException when dollars < 0
-     * or cents < 0 or cents > 99
+     *
      * @param sign
      * @param dollars
      * @param cents
+     * @throws IllegalArgumentException when dollars < 0
+     *                                  or cents < 0 or cents > 99
      */
     public Currency(boolean sign, long dollars, byte cents) {
         this.sign = sign;
-        if (dollars<0){
+        if (dollars < 0) {
             throw new IllegalArgumentException("Dollar value must be >= 0");
-        }else {
+        } else {
             this.dollars = dollars;
         }
-        if (cents < 0|| cents>99){
+        if (cents < 0 || cents > 99) {
             throw new IllegalArgumentException("Cents must be between 0 and 99");
-        }else {
+        } else {
             this.cents = cents;
         }
     }
@@ -49,11 +50,12 @@ public class Currency {
      * initialize instance to $0.00
      */
     public Currency() {
-        this(PLUS,0L,(byte)0);
+        this(PLUS, 0L, (byte) 0);
     }
 
     /**
      * initialize with double
+     *
      * @param value
      */
     public Currency(double value) {
@@ -62,22 +64,23 @@ public class Currency {
 
     /**
      * set sign, dollars, and cents
+     *
      * @param value
      */
     public void setValue(double value) {
-        if (value<0){
+        if (value < 0) {
             sign = MINUS;
             value = -value;
-        }else {
+        } else {
             sign = PLUS;
             dollars = (long) value;//extract integral part
 
             //get two decimal digits
-            cents = (byte) ((value + 0.005 -dollars) * 100);
+            cents = (byte) ((value + 0.005 - dollars) * 100);
         }
     }
 
-    public void setValue(Currency x){
+    public void setValue(Currency x) {
         sign = x.sign;
         dollars = x.dollars;
         cents = x.cents;
@@ -106,6 +109,7 @@ public class Currency {
 
     /**
      * set sign = sign
+     *
      * @param sign
      */
     public void setSign(boolean sign) {
@@ -114,56 +118,58 @@ public class Currency {
 
     /**
      * set dollars = dollars
+     *
      * @param dollars
      */
     public void setDollars(long dollars) {
-        if (dollars<0){
+        if (dollars < 0) {
             throw new IllegalArgumentException("Dollar value must be >= 0");
-        }else {
+        } else {
             this.dollars = dollars;
         }
     }
 
     /**
      * set cents = cents
+     *
      * @param cents
      */
     public void setCents(byte cents) {
-        if (cents < 0|| cents > 99){
+        if (cents < 0 || cents > 99) {
             throw new IllegalArgumentException("Cents must be between 0 and 99");
-        }else {
+        } else {
             this.cents = cents;
         }
     }
 
     /**
-     *
      * @return convert to a string
      */
     @Override
     public String toString() {
-        if (sign == PLUS){
+        if (sign == PLUS) {
             return "$" + dollars + "." + TWODIGIT.format(cents);
-        }else {
+        } else {
             return "-$" + dollars + "." + TWODIGIT.format(cents);
         }
     }
 
     //arithmetic methods
+
     /**
      * @param x
      * @return this + x
      */
-    public Currency add(Currency x){
+    public Currency add(Currency x) {
         //convert this to a long
         long a1 = dollars * 100 + cents;
-        if (sign == MINUS){
+        if (sign == MINUS) {
             a1 = -a1;
         }
 
         //convert x to a long
         long a2 = x.dollars * 100 + x.cents;
-        if (x.sign == MINUS){
+        if (x.sign == MINUS) {
             a2 = -a2;
         }
 
@@ -171,13 +177,13 @@ public class Currency {
 
         //convert result to Currency object
         Currency answer = new Currency();
-        if (a3<0){
+        if (a3 < 0) {
             answer.sign = MINUS;
             a3 = -a3;
-        }else {
+        } else {
             answer.sign = PLUS;
         }
-        answer.dollars = a3 /100;
+        answer.dollars = a3 / 100;
         answer.cents = (byte) (a3 - answer.dollars * 100);
 
         return answer;
@@ -186,27 +192,27 @@ public class Currency {
     /**
      * @param x
      * @return this incremented by x
-     * */
-    public Currency increment(Currency x){
+     */
+    public Currency increment(Currency x) {
         setValue(add(x));
         return this;
     }
 
-    public void input(){
+    public void input() {
         Scanner input = new Scanner(System.in);
         System.out.println("input a value of $");
         double value = input.nextDouble();
         setValue(value);
     }
 
-    public Currency subtract(Currency x){
+    public Currency subtract(Currency x) {
         long a1 = dollars * 100 + cents;
-        if (sign == MINUS){
+        if (sign == MINUS) {
             a1 = -a1;
         }
 
         long a2 = x.dollars * 100 + x.cents;
-        if (x.sign == MINUS){
+        if (x.sign == MINUS) {
             a2 = -a2;
         }
 
@@ -214,32 +220,32 @@ public class Currency {
 
         //convert result to Currency object
         Currency answer = new Currency();
-        if (a3<0){
+        if (a3 < 0) {
             answer.sign = MINUS;
             a3 = -a3;
-        }else {
+        } else {
             answer.sign = PLUS;
         }
-        answer.dollars = a3 /100;
+        answer.dollars = a3 / 100;
         answer.cents = (byte) (a3 - answer.dollars * 100);
 
         return answer;
     }
 
-    public Currency percent(float x){
-        if (x<0 || x>100){
+    public Currency percent(float x) {
+        if (x < 0 || x > 100) {
             throw new IllegalArgumentException("x value must be between 1 and 0");
-        }else {
+        } else {
             long a1 = dollars * 100 + cents;
-            if (sign == MINUS){
+            if (sign == MINUS) {
                 a1 = -a1;
             }
             long a2 = (long) (a1 * x * 0.01);
             Currency answer = new Currency();
-            if (a2 <0){
+            if (a2 < 0) {
                 answer.sign = MINUS;
                 a2 = -a2;
-            }else {
+            } else {
                 answer.sign = PLUS;
             }
             answer.dollars = a2 / 100;
@@ -248,17 +254,17 @@ public class Currency {
         }
     }
 
-    public Currency multiply(float x){
+    public Currency multiply(float x) {
         long a1 = dollars * 100 + cents;
-        if (sign == MINUS){
+        if (sign == MINUS) {
             a1 = -a1;
         }
         long a2 = (long) (a1 * x);
         Currency answer = new Currency();
-        if (a2 <0){
+        if (a2 < 0) {
             answer.sign = MINUS;
             a2 = -a2;
-        }else {
+        } else {
             answer.sign = PLUS;
         }
         answer.dollars = a2 / 100;
@@ -268,15 +274,15 @@ public class Currency {
 
     public Currency divide(float x) {
         long a1 = dollars * 100 + cents;
-        if (sign == MINUS){
+        if (sign == MINUS) {
             a1 = -a1;
         }
         long a2 = (long) (a1 / x);
         Currency answer = new Currency();
-        if (a2 <0){
+        if (a2 < 0) {
             answer.sign = MINUS;
             a2 = -a2;
-        }else {
+        } else {
             answer.sign = PLUS;
         }
         answer.dollars = a2 / 100;
