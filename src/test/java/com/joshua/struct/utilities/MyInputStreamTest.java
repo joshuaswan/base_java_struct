@@ -9,7 +9,7 @@ import static org.junit.Assert.*;
  * Created by joshua on 2017/9/6.
  */
 public class MyInputStreamTest {
-    @Test
+//    @Test
     public void test(){
         boolean b;
         int i, j, k;
